@@ -1,7 +1,4 @@
----
-title: "tidyDenovix Docuseries"
-output: html_document
----
+# tidyDenovix Docuseries
 
 ## Introduction
 
