@@ -1,0 +1,266 @@
+---
+title: "tidyDenovix Docuseries"
+output: html_notebook
+---
+
+## Introduction
+
+I am exhausted from failing to perform proper documentation of complex projects that at first glance seem simplistic but with every key stroke indicates complexity. Such complexity as indicated after extensive practice becomes simple but when starting to program, failing to document could keep you in a perpetual rookie state.
+
+I am documenting tidyDenovix as the first in this new phase of documentation because it is the easiest one to document when compared to normfluodbf and other projects I have embarked on.
+
+The documentation series is often intended to appreciate myself and by that I mean actively documenting what my initial thoughts were on a solution to what the final thoughts were often achieved by patience in the programming journey. Because programming is not coding, it often means that the initial thought burden is heavier because we must always start programming with the desire to elimination repitition of the workflow whereas coding is forgiving to the mind as the coder has the liberty of repeting the same steps manually over and over again which means hard coding can be forgiven. 
+
+The second benefit of the documentation series is to ensure publication of the programming difficulties as it helps the programmer understand that it is not an easy task and there should be a need to feel this relative to public opinion.
+
+The final benefit is the educative benefit provided to aspiring programmers in search of knowledge and even intangibles like inspiration.
+
+As a remark, this approach should be applied to any programming language (R,Python, ReactJS, NodeJS etc.).
+
+## Documentation Format
+
+Before Solution: A look at the prior solution often times not appropriate or fully baked when compared to the after solution. This often happens when dealing with programming complex problems since complexity can be mentally blocking and demands the use of Occam's razor. In my opinion, every good programmer (perhaps just me) must start a project in the mindset of Occam's razor meaning the simplest solution must be sought after. Moreover, when a programmer encounters a new complex problem, the warm-up to this process demands simplicity in order to avoid getting ahead of oneself and preventing paralysis, a phenomenon that can be encountered even as a novel writer (often referred to as writer's block). There is a need to take it easy while warming up to complex programming problems and doing so consistently until this warm-up process takes considerably less time with every iteration in new projects.
+
+The before product of work for a coder (or non-technical expert) while attempting to program should be of abysmmal quality and this will be the case in tidyDenovix as I showcase the coding performed in this project as a technical outsider despite having some lines of code under my belt. 
+
+As can be seen, there are several reasons the before product in a coding project could differ from the after product in a programming project. Also, there are several levels to the gaps that can exist in the difference between the before solution and final or after solution. It is simplistic to mention that one can expect a lesser gap in the difference between the before and after solution with increasing programming experience (tenure or acumen).
+
+In a nutshell, the before solution is often a rudimentary solution, often thought of as the brute-force solution. This solution could often times be wrong or simply requires optimization. Generally, the observation is unless the problem is extremely familiar, programmers can expect to have a before solution in every complex problem.
+
+Transition Solution: A solution that sits between the before solution and final solution. This is hard to document as it can entail extremely high frequency thinking required to make changes to the initial solution hence difficult to capture for documentation purposes. Often times, this simply might not exist for a rookie taking on an extremely complex project. For example, my state when I coded the initial variant of tidyDenovix compared to my state programming the tidyDenovix package itself. Experts might have no transition but simply a complete change in approach so this state is the most dispensable.
+
+Final Solution: The final programmatic solution to a problem. Often an optimized initial solution or a correction to the initial solution. Corrections are often common for less experienced programmers but often dissapear with increasing experience.
+
+## tidyDenovix Case-Study
+
+Now, I move into the documentation of tidyDenovix and my personal experience working on it. 
+
+### BEFORE
+
+- Let's take a look at my coding approach prior to making the tidyDenovix package. At this point it was not called tidyDenovix on github but simply labeled RNA spectrophotometry in R. Keep in mind that the crazy blob of code I had while being a undergraduate student had been revamped after realizing that I had links to that trash on my resume when I applied to graduate school in 2019. 
+
+- However, let us jump straight to what the coding approach looked like and trust me I had no idea what I was doing given I could not even differentiate programming from coding. Bear in mind given the shame I felt from 5 years ago, this before version was a clean up from the original mess. Also a year ago, I published something on this but that was before the tidyDenovix package was made.
+
+```{r}
+spec <- read.csv('rnaspec2018.csv', header = T)
+
+match("Exposure",names(spec)) 
+liverPM3 = spec[1,21:151] 
+liverPM6 = spec[3,21:151]
+liverPM10 = spec[5,21:151]
+liverPM14 = spec[7,21:151]
+liverPM18 = spec[10,21:151]
+liverPM22 = spec[11,21:151]
+liverPMcal = spec[13,21:151]
+
+library(tidyr)
+test = gather(liverPM3)
+test1 = gather(liverPM6)
+test2 = gather(liverPM10)
+test3 = gather(liverPM14)
+test4 = gather(liverPM18)
+test5 = gather(liverPM22)
+test6 = gather(liverPMcal)
+
+circ.set = cbind(test,test1$value,test2$value,test3$value,test4$value,test5$value,test6$value)
+write.csv(circ.set,file = 'circ.set.csv')
+
+circ.set$key <- gsub("X","",as.character(circ.set$key))
+library(data.table)
+setnames(circ.set, old=c("key","value","test1$value","test2$value","test3$value","test4$value","test5$value","test6$value"), new=c("wl", "zt2", "zt6", "zt10","zt14","zt18","zt22","ztcal"))
+circ.set$wl <- as.numeric(as.character(circ.set$wl))
+head(circ.set)
+
+library(ggplot2)
+library(ggdark)
+library(ggthemes)
+library(hrbrthemes)
+old <- theme_set(theme_dark())
+
+p1 = ggplot(circ.set, aes(x=wl)) + geom_line(aes(y=zt2, color='zt2')) + 
+  geom_line(aes(y=zt6, color='zt6')) + 
+  geom_line(aes(y=zt10, color='zt10')) + 
+  geom_line(aes(y=zt14, color='zt14'))  + 
+  geom_line(aes(y=zt18, color='zt18')) + 
+  geom_line(aes(y=zt22, color='zt22')) + 
+  geom_line(aes(y=ztcal, color='ztcal')) + 
+  theme_ipsum()+ labs(title = 'Absorbance vs Wavelength', x = 'Wavelength', y='10 mm Absorbance', color='Circadian Times')                                                                                                             
+p1
+
+p2 = ggplot(circ.set, aes(x=wl)) + geom_line(aes(y=zt2, color='zt2')) + 
+  geom_line(aes(y=zt6, color='zt6')) + 
+  geom_line(aes(y=zt10, color='zt10')) + 
+  geom_line(aes(y=zt14, color='zt14'))  + 
+  geom_line(aes(y=zt18, color='zt18')) + 
+  geom_line(aes(y=zt22, color='zt22')) + 
+  geom_line(aes(y=ztcal, color='ztcal')) + 
+  dark_mode()+ labs(title = 'Absorbance vs Wavelength', x = 'Wavelength', y='10 mm Absorbance', color='Circadian Times')                                    
+
+print(p2 + theme(plot.title = element_text(hjust = 0.5)))
+theme_update(plot.title = element_text(hjust = 0.5))
+theme_set(theme_linedraw())
+```
+
+
+- Although, the lines of code used here are not excessive, words cannot describe how horrible and non-programmatic this approach is. This is the before solution where all the lines of code are necessary. Before this approach, I had an original solution with random lines of code used because I had zero idea how things worked in R. 
+
+### TRANSITION
+
+- The solution above is both the before and transition solution because there was a solution that came before it but I do not have access to the shameful solution. This transition solution did not inspire tidyDenovix because I was clueless as to what was in here when I started a fresh approach to tidyDenovix. It is important for programmers to approach the fresh start approach because it can unleash new levels of creativity. In this transition section I will document the main function from the tidyDenovix package.
+
+```{r}
+tidyDenovix = function(dfile, file_type= c('csv','excel','txt'), sample_type = c('RNA','DNA'), check_level = c('strict','lax'), qc_omit = NULL, normalized = c('yes','no'), fun = NA){
+
+  suppressWarnings({
+
+    #PRE-TRANSPOSE:workflow before transposing
+
+    nofun <- is.na(fun)
+
+    xdf_qc = read_denovix_data(dfile=dfile, file_type = file_type)
+    xdf = read_denovix_data(dfile=dfile, file_type = file_type)
+
+    #get the qc df
+    qc_df = qc_attributes(dfile = dfile,xdf)
+
+    #get the lambda df
+    lambda_df = extract_wavelength(xdf)
+    #lambda_df = make_wavelength()
+    lambda_df_special = lambda_df[complete.cases(lambda_df), ]
+    #lambda_df_special = make_wavelength
+    #lambda_df_special = lambda_df[complete.cases(lambda_df), ]
+
+    #initial col_names for qc crosscheck
+    xdfc = janitor::clean_names(xdf)
+    esn = extract_sample_names(dfile=dfile)
+    sample_names = xdfc[, c("sample_name")]
+    sample_names_wl = append('wave_length', sample_names)
+
+    #TRANSPOSE the df-for workflow after transposing
+
+    xdf = data.table::transpose(l = xdf)
+
+    #sample_col_names<- vector("list")
+    sample_col_names<- c()
+    for(j in xdf[2,]){
+      if(is.na(j) != nofun){
+        sample_col_names <- c(sample_col_names,j)
+      }
+    }
+    sample_col_names = append('wave_length', sample_col_names)
+
+    #column names quality control
+    qc_colnames = as.numeric((sample_names_wl == sample_col_names))
+
+    if (sum(qc_colnames) == length(sample_names_wl)){
+      col_names = sample_names
+    } else {
+      col_names = c(1:length(sample_names))
+    }
+
+    #wrangle df
+    cutoff = which( colnames(xdf)=="Exposure" )
+    aftercut = as.numeric(cutoff + 1)
+    xdf = xdf[aftercut:nrow(xdf),]
+
+    #bind qc_df with wrangled df for QC
+    xdf =rbind(qc_df, xdf)
+    colnames(xdf) = esn
+
+    #QC now
+    xdf = lambda_check(xdf,sample_type = sample_type, check_level = check_level)
+    samp_names = lambda_check_source(xdf_qc,sample_type = sample_type, check_level = check_level)
+    samp_names_wl = append('wave_length', samp_names)
+
+    if( is.null(qc_omit) || qc_omit == 'yes'){
+
+      if(is.null(normalized) || 'no' %in% normalized){
+        xdf = xdf[6:nrow(xdf),]
+        xdf = cbind(lambda_df, xdf)
+        xdf = xdf[complete.cases(xdf), ]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        #xdf = xdf %>% drop_na()
+        #xdf = na.omit(xdf)
+        rownames(xdf) = c(1:nrow(xdf))
+        colnames(xdf) = samp_names_wl
+
+        return(xdf)
+
+      } else {
+        xdf = xdf[6:nrow(xdf),]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        xdf = xdf[complete.cases(xdf), ]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], min_max_norm))
+        xdf = cbind(lambda_df_special, xdf)
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        #xdf = xdf %>% drop_na()
+        #xdf = na.omit(xdf)
+        #rownames(xdf) = c(1:nrow(xdf))
+        colnames(xdf) = samp_names_wl
+
+        return(xdf)
+
+      }
+
+    } else {
+
+      if(is.null(normalized) || 'no' %in% normalized){
+        n <- 'qc_df'
+        assign( paste0(n, '_check'), as.data.frame(xdf), envir = parent.frame())
+        xdf = xdf[6:nrow(xdf),]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        xdf = cbind(lambda_df, xdf)
+        xdf = xdf[complete.cases(xdf), ]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        #xdf = xdf %>% drop_na()
+        #xdf = na.omit(xdf)
+        rownames(xdf) = c(1:nrow(xdf))
+        colnames(xdf) = samp_names_wl
+
+        return(xdf)
+
+      } else {
+        n <- 'qc_df'
+        assign( paste0(n, '_check'), as.data.frame(xdf), envir = parent.frame())
+        xdf = xdf[6:nrow(xdf),]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        xdf = xdf[complete.cases(xdf), ]
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], min_max_norm))
+        xdf = cbind(lambda_df_special, xdf)
+        xdf = as.data.frame(lapply(xdf[1:ncol(xdf)], as.numeric))
+        #xdf = xdf %>% drop_na()
+        #xdf = na.omit(xdf)
+        #rownames(xdf) = c(1:nrow(xdf))
+        colnames(xdf) = samp_names_wl
+
+        return(xdf)
+
+      }
+
+    }
+
+  })
+
+}
+
+```
+
+- This function did not make it into the package as is but was a transition point into whipping out the final function that went into the package. 
+
+### FINAL
+
+- The tidyDenovix package contains the final main function and other functions that went through this same life cycle.
+
+## Conclusion
+
+- What I articulate here is that programming is not a single-step process especially if the endgame is a single step solution for users. Programmers find ways to automate the user story and go through short or extended periods finding patterns within the workflow so that the user or even the programmer can then benefit from never having to repeat the process at extremely difficult levels. 
+
+- The motivation behind this work will be part of another document and can also be found in the [README](https://github.com/AlphaPrime7/tidyDenovix/tree/main) of tidyDenovix.
+
+- Another [Rpubs](https://rpubs.com/alphaprime7/924442) document will show some more details on my thinking behind this package. Notice I did not even normalize the data in this approach and that was what I presented at the seminar about 6 years ago. 
+
+- This document should serve as inspiration for myself and anyone failing to articulate their thoughts in the software development space. I strongly believe that only by documentation do we improve ourselves as program developers and slowly but surely avoid the pitfalls of the coding mindset.
+
+
+
+
