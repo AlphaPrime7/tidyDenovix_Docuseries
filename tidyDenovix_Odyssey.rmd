@@ -9,7 +9,7 @@ I am exhausted from failing to perform proper documentation of complex projects 
 
 I am documenting tidyDenovix as the first in this new phase of documentation because it is the easiest one to document when compared to normfluodbf and other projects I have embarked on.
 
-The documentation series is often intended to appreciate myself and by that I mean actively documenting what my initial thoughts were on a solution to what the final thoughts were often achieved by patience in the programming journey. Because programming is not coding, it often means that the initial thought burden is heavier because we must always start programming with the desire to elimination repitition of the workflow whereas coding is forgiving to the mind as the coder has the liberty of repeting the same steps manually over and over again which means hard coding can be forgiven. 
+The documentation series is often intended to appreciate myself and by that I mean actively documenting what my initial thoughts were on a solution to what the final thoughts were often achieved by patience in the programming journey. Because programming is not coding, it often means that the initial thought burden is heavier because we must always start programming with the desire to elimination repetition of the workflow whereas coding is forgiving to the mind as the coder has the liberty of repeating the same steps manually over and over again which means hard coding can be forgiven. 
 
 The second benefit of the documentation series is to ensure publication of the programming difficulties as it helps the programmer understand that it is not an easy task and there should be a need to feel this relative to public opinion.
 
