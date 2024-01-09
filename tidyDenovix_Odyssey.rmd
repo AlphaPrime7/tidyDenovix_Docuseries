@@ -249,7 +249,7 @@ tidyDenovix = function(dfile, file_type= c('csv','excel','txt'), sample_type = c
 
 ### FINAL
 
-- The tidyDenovix package contains the final main function and other functions that went through this same life cycle.
+- The [tidyDenovix](https://github.com/AlphaPrime7/tidyDenovix) package contains the final main function and other functions that went through this same life cycle.
 
 ## Conclusion
 
